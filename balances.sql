@@ -9,7 +9,8 @@ SELECT * FROM(
       -- some first/last have a trailing/leading space
       -- e.g. Wilson  Pickett
       ELSE CONCAT_WS(' ', first.field_first_name_value, last.field_last_name_value)
-    END AS name
+    END AS name,
+    IFNULL(statement.sent, 'N/A') sent
 
   FROM sale s
   
@@ -43,6 +44,16 @@ SELECT * FROM(
 
   LEFT JOIN invoice i
   ON i.saleID = s.saleID
+
+  -- most recent statement date if one sent
+  LEFT JOIN(SELECT
+    s.uid,
+    s.sentDate sent
+    FROM statementHistory s
+    ORDER BY sent DESC
+    LIMIT 1
+  ) AS statement
+  ON s.clientID = statement.uid
 
   -- LOGIC
   WHERE s.saleStatus != 'Void'
