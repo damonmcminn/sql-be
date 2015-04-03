@@ -45,6 +45,7 @@ SELECT * FROM(
   LEFT JOIN invoice i
   ON i.saleID = s.saleID
 
+  -- table has multiple rows per client
   LEFT JOIN (SELECT
     s.uid,
     MAX(s.sentDate) sent
