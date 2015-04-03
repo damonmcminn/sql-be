@@ -41,8 +41,13 @@ SELECT * FROM(
   INNER JOIN users_roles r
   ON profile.uid = r.uid
 
+  LEFT JOIN invoice i
+  ON i.saleID = s.saleID
+
   -- LOGIC
   WHERE s.saleStatus != 'Void'
+  AND s.type = 'Invoice'
+  AND i.dueDate < CURDATE()
   -- clients only
   AND r.rid = 4
   -- Ignore anonymous
