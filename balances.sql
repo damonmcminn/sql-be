@@ -53,3 +53,4 @@ SELECT * FROM(
 ) AS client
 
 WHERE client.balance < 0
+LIMIT 10
