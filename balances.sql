@@ -45,13 +45,10 @@ SELECT * FROM(
   LEFT JOIN invoice i
   ON i.saleID = s.saleID
 
-  -- most recent statement date if one sent
-  LEFT JOIN(SELECT
+  LEFT JOIN (SELECT
     s.uid,
-    s.sentDate sent
+    MAX(s.sentDate) sent
     FROM statementHistory s
-    ORDER BY sent DESC
-    LIMIT 1
   ) AS statement
   ON s.clientID = statement.uid
 
