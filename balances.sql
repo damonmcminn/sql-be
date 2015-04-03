@@ -46,12 +46,14 @@ SELECT * FROM(
   ON i.saleID = s.saleID
 
   -- table has multiple rows per client
-  LEFT JOIN (SELECT
-    s.uid,
+  -- most recent statement date if one sent
+  LEFT JOIN(SELECT
+    s.customerID id,
     MAX(s.sentDate) sent
     FROM statementHistory s
+    GROUP BY id
   ) AS statement
-  ON s.clientID = statement.uid
+  ON s.clientID = statement.id
 
   -- LOGIC
   WHERE s.saleStatus != 'Void'
